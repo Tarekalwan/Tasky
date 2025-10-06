@@ -1,2 +1,62 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'primeicons/primeicons.css';
+
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+h2 {
+  text-align: center;
+  color: #2b2b2b;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.p-field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.25rem;
+}
+
+.p-inputtext,
+.p-password,
+.p-autocomplete {
+  width: 100%;
+}
+
+p-button {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+a {
+  color: #007ad9;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+

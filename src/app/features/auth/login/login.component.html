@@ -1,0 +1,21 @@
+<div class="card p-fluid">
+  <h2>Connexion</h2>
+
+  <div class="p-field">
+    <label>Nom d'utilisateur</label>
+    <input pInputText [(ngModel)]="username" placeholder="Entrez votre nom d'utilisateur" />
+  </div>
+
+  <div class="p-field">
+    <label>Mot de passe</label>
+    <p-password [(ngModel)]="password" [feedback]="false" toggleMask="true" placeholder="Mot de passe" />
+  </div>
+
+  <p-button label="Se connecter" (onClick)="onLogin()" [disabled]="loading()"></p-button>
+
+  <div style="text-align:center; margin-top:1rem;">
+    <span>Pas encore de compte ?</span>
+    <br />
+    <a routerLink="/signup">Créer un compte</a>
+  </div>
+</div>

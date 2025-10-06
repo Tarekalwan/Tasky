@@ -1,0 +1,48 @@
+<div class="card p-fluid">
+  <h2>Créer un compte</h2>
+
+  <div class="p-field">
+    <label>Nom d'utilisateur</label>
+    <input pInputText [(ngModel)]="username" placeholder="Ex: johndoe" />
+  </div>
+
+  <div class="p-field">
+    <label>Prénom</label>
+    <input pInputText [(ngModel)]="firstname" placeholder="Votre prénom" />
+  </div>
+
+  <div class="p-field">
+    <label>Nom</label>
+    <input pInputText [(ngModel)]="lastname" placeholder="Votre nom" />
+  </div>
+
+  <div class="p-field">
+    <label>Email</label>
+    <input pInputText [(ngModel)]="email" type="email" placeholder="exemple@email.com" />
+  </div>
+
+  <div class="p-field">
+    <label>Mot de passe</label>
+    <p-password [(ngModel)]="password" [feedback]="true" toggleMask="true" placeholder="Créer un mot de passe" />
+  </div>
+
+  <div class="p-field">
+    <label>Situation</label>
+    <p-autocomplete
+      [(ngModel)]="status"
+      [dropdown]="true"
+      [suggestions]="suggestions()"
+      (completeMethod)="search($event)"
+      placeholder="Étudiant, Salarié ou Autre"
+    />
+  </div>
+
+
+  <p-button label="Créer un compte" (onClick)="onSignup()" [disabled]="loading()"></p-button>
+
+  <div style="text-align:center; margin-top:1rem;">
+    <span>Déjà un compte ?</span>
+    <br />
+    <a routerLink="/login">Se connecter</a>
+  </div>
+</div>
