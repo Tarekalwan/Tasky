@@ -1,0 +1,18 @@
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">🗂️ Tasky</h2>
+    <nav>
+      <a routerLink="/home" routerLinkActive="active">🏠 Accueil</a>
+      <a routerLink="/projects" routerLinkActive="active">📁 Projets</a>
+      <a routerLink="/tasks" routerLinkActive="active">✅ Tâches</a>
+      <a (click)="logout()">🚪 Déconnexion</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>👋 Bienvenue, {{ user()?.firstname || user()?.username }} !</h1>
+    <p>Heureux de vous revoir sur Tasky.</p>
+  </main>
+</div>

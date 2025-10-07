@@ -9,11 +9,7 @@ import { Router } from '@angular/router';
   standalone: true,
   selector: 'app-home',
   imports: [CommonModule, ButtonModule],
-  template: `
-  <div class="card" style="text-align:center; padding:2rem; margin:auto; max-width:480px;">
-    <h2>👋 Bienvenue, {{ user()?.firstname || user()?.username || 'Utilisateur' }} !</h2>
-    <p-button label="Se déconnecter" (onClick)="logout()"></p-button>
-  </div>`
+  templateUrl: './home.component.html'
 })
 export class HomeComponent {
   private auth = inject(LocalAuthService);

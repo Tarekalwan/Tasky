@@ -1,0 +1,33 @@
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="logo">🗂️</span>
+      <span class="name">Tasky</span>
+    </div>
+
+    <div class="user">
+      <p-avatar
+        shape="circle"
+        label="{{ (user?.firstname?.[0] || user?.username?.[0] || 'U') | uppercase }}">
+      </p-avatar>
+      <div class="meta">
+        <div class="fullname">{{ user?.firstname || user?.username }}</div>
+        <small class="status">{{ user?.status || 'Utilisateur' }}</small>
+      </div>
+    </div>
+
+    <p-divider />
+
+    <p-panelMenu [model]="items" [multiple]="false"></p-panelMenu>
+
+    <div class="bottom">
+      <p-button label="Déconnexion" icon="pi pi-sign-out" (onClick)="logout()" severity="secondary"></p-button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
