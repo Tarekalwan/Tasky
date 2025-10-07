@@ -1,3 +1,4 @@
+
 import { Injectable, signal } from '@angular/core';
 import { SupabaseClientService } from './supabase-client.service';
 
@@ -15,14 +16,8 @@ function safeParseUser(raw: string | null): LocalUser | null {
   if (!raw) return null;
   try {
     const obj = JSON.parse(raw);
-    // micro-validation
-    if (obj && typeof obj === 'object' && 'id' in obj && 'username' in obj) {
-      return obj as LocalUser;
-    }
-  } catch {
-    // si la valeur était "undefined" / JSON invalide
-  }
-  // si invalide → on nettoie la clé
+    if (obj && typeof obj === 'object' && 'id' in obj && 'username' in obj) return obj as LocalUser;
+  } catch {}
   localStorage.removeItem('tasky_user');
   return null;
 }
@@ -36,39 +31,47 @@ export class LocalAuthService {
     this._user.set(safeParseUser(localStorage.getItem('tasky_user')));
   }
 
-  async signup(user: Partial<LocalUser> & { password: string }) {
-    const { data, error } = await this.sb.supabase
-      .from('users')
-      .insert(user)
-      .select('*')
-      .single();
-    if (error || !data) throw new Error(error?.message || 'Création impossible');
-    this._user.set(data);
-    localStorage.setItem('tasky_user', JSON.stringify(data));
-    return data;
+  /** 🔐 Inscription via RPC (hash bcrypt côté DB) */
+  async signup(u: {
+    username: string;
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    status?: string;
+    password: string;
+  }) {
+    const { data, error } = await this.sb.supabase.rpc('signup_user', {
+      p_username:  u.username,
+      p_firstname: u.firstname ?? null,
+      p_lastname:  u.lastname ?? null,
+      p_email:     u.email ?? null,
+      p_status:    u.status ?? 'autre',
+      p_password:  u.password
+    });
+
+    if (error || !data?.[0]) throw new Error(error?.message ?? 'Création impossible');
+    const user = data[0] as LocalUser;
+    this._user.set(user);
+    localStorage.setItem('tasky_user', JSON.stringify(user));
+    return user;
   }
 
+  /** 🔑 Connexion via RPC (vérif bcrypt côté DB) */
   async login(username: string, password: string) {
-    const { data, error } = await this.sb.supabase
-      .from('users')
-      .select('*')
-      .eq('username', username)
-      .eq('password', password)
-      .single();
-    if (error || !data) throw new Error('Identifiants invalides');
-    this._user.set(data);
-    localStorage.setItem('tasky_user', JSON.stringify(data));
-    return data;
+    const { data, error } = await this.sb.supabase.rpc('login_user', {
+      p_username: username,
+      p_password: password
+    });
+
+    if (error || !data?.[0]) throw new Error('Identifiants invalides');
+    const user = data[0] as LocalUser;
+    this._user.set(user);
+    localStorage.setItem('tasky_user', JSON.stringify(user));
+    return user;
   }
 
-  getCurrentUser() {
-    return this._user();
-  }
-
-  logout() {
-    this._user.set(null);
-    localStorage.removeItem('tasky_user');
-  }
-
+  getCurrentUser() { return this._user(); }
+  logout() { this._user.set(null); localStorage.removeItem('tasky_user'); }
   isLoggedIn() { return !!this._user(); }
 }
+
